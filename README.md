@@ -1,7 +1,8 @@
 # monet-client
 
-> A Vue.js project
-> To work need this server https://github.com/attikos/monet-server
+> A Vue.js project.
+
+Needs [monet-server](https://github.com/attikos/monet-server) running.
 
 ## Build Setup
 
@@ -26,5 +27,3 @@ npm run build --report
 # or
 yarn build --report
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
