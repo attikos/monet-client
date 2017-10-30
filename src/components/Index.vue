@@ -17,7 +17,7 @@
                     <v-flex xs12 sm6>
                         <input-card
                             cardName="costCash"
-                            title="Расходы"
+                            title="Расход"
                             :listRows="costCash.rows"
                         ></input-card>
                     </v-flex>
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import inputCard from './inputCard.vue'
+import inputCard from './input-card.vue'
 import { sumRowValues } from '@/utils/main.js'
 
 export default {

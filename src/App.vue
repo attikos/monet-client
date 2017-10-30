@@ -3,7 +3,7 @@
         <!-- <v-navigation-drawer></v-navigation-drawer> -->
         <v-toolbar>
             <v-toolbar-side-icon class="hidden-md-and-up"></v-toolbar-side-icon>
-            <v-toolbar-title>Исполняющий желания</v-toolbar-title>
+            <v-toolbar-title>Исполнитель желаний</v-toolbar-title>
 
             <v-spacer></v-spacer>
 
