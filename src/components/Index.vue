@@ -42,9 +42,9 @@
                             </v-card-title>
 
                             <v-card-text>
-                                Суммарный доход: {{ ( incomeCash.sum ) }}
+                                Суммарный доход: {{ ( incomeCash.sumRows ) }}
                                 <br />
-                                Суммарный расход: {{ money( costCash.sum ) }}
+                                Суммарный расход: {{ money( costCash.sumRows ) }}
                             </v-card-text>
 
                             <v-card-text :class="{ 'red--text' : resultCost < 0 }">
@@ -54,7 +54,7 @@
                             <v-card-text :class="{ 'red--text' : resultCost < 0 }">
                                 Желания исполнятся через: {{ resultWish.months }} месяцев.
                                 <br>
-                                Общая стоимость желаний: {{ money( wish.sum ) }}
+                                Общая стоимость желаний: {{ money( wish.sumRows ) }}
                             </v-card-text>
 
                         </v-card>
@@ -79,41 +79,35 @@ export default {
         inputCard,
     },
 
-    data(){
-        return {
-            CostTable : class {
-                constructor( tableState ) {
-                    this.rows = tableState;
-                    this.sum  = sumRowValues( tableState );
-                }
-            },
-        };
-    },
-
     computed: {
         incomeCash() {
-            return new this.CostTable( this.getTableState('incomeCash') );
+            return this.createTable('incomeCash');
         },
         costCash() {
-            return new this.CostTable( this.getTableState('costCash') );
+            return this.createTable('costCash');
         },
         wish() {
-            return new this.CostTable( this.getTableState('wish') );
+            return this.createTable('wish');
         },
         resultCost() {
-            return this.incomeCash.sum - this.costCash.sum;
+            return this.incomeCash.sumRows - this.costCash.sumRows;
         },
         resultWish() {
             return {
-                months : this.wish.sum / this.resultCost,
-                years  : ~~ ( ( this.wish.sum / this.resultCost ) / 12 ),
+                months : this.wish.sumRows / this.resultCost,
+                years  : ~~( ( this.wish.sumRows / this.resultCost ) / 12 ),
             };
         }
     },
 
     methods: {
-        getTableState( tableName ) {
-            return [ ...this.$store.state[ tableName ] ];
+        createTable( tableName ) {
+            let data = [ ...this.$store.state[ tableName ] ];
+
+            return {
+                rows    : data,
+                sumRows : sumRowValues( data ),
+            };
         },
     }
 };
