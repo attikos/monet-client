@@ -67,36 +67,38 @@ export default {
     },
 
     methods: {
-
-        /**
-        * Метод для сохранения.
-        */
-        async saveCell( item, data ) {
-            await services[ this.cardName ]
-                .update(
-                    item._id,
-                    { ...item, [ data.cellName ] : data.val }
-                );
+        saveCell( item, data ) {
+            this.$store.dispatch( 'updateService',
+                {
+                    serviceName : this.cardName,
+                    id          : item._id,
+                    data        : { ...item, [ data.cellName ]: data.val },
+                }
+            );
         },
-
-        /**
-        * Иницирует добавление новой строчки дохода/расхода
-        */
-        async addCell( data ) {
+        addCell( data ) {
             this.hideNewFields();
 
-            await services[ this.cardName ]
-                .create( { [ data.cellName ] : data.val } );
+            this.$store.dispatch( 'createService',
+                {
+                    serviceName : this.cardName,
+                    data        : { [ data.cellName ] : data.val },
+                }
+            );
+        },
+        removeTableRow( item ) {
+            this.$store.dispatch( 'removeService',
+                {
+                    serviceName : this.cardName,
+                    id          : item._id,
+                }
+            );
         },
         showNewFields() {
             this.isShowNewFields = true;
         },
         hideNewFields() {
             this.isShowNewFields = false;
-        },
-        async removeTableRow( item ) {
-            await services[ this.cardName ]
-                .remove( item._id );
         },
     }
 }
