@@ -94,8 +94,8 @@ export default {
         },
         resultWish() {
             return {
-                months : this.wish.sumRows / this.resultCost,
-                years  : ~~( ( this.wish.sumRows / this.resultCost ) / 12 ),
+                months : ( this.wish.sumRows / this.resultCost ).toFixed(2),
+                years  : ~~ ( ( this.wish.sumRows / this.resultCost ) / 12 ),
             };
         }
     },
