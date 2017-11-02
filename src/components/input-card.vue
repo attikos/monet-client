@@ -70,9 +70,9 @@ export default {
         saveCell( item, data ) {
             this.$store.dispatch( 'updateService',
                 {
-                    serviceName : this.cardName,
-                    id          : item._id,
-                    data        : { ...item, [ data.cellName ]: data.val },
+                    service : this.cardName,
+                    id      : item._id,
+                    data    : { ...item, [ data.cellName ]: data.val },
                 }
             );
         },
@@ -81,16 +81,16 @@ export default {
 
             this.$store.dispatch( 'createService',
                 {
-                    serviceName : this.cardName,
-                    data        : { [ data.cellName ] : data.val },
+                    service : this.cardName,
+                    data    : { [ data.cellName ] : data.val },
                 }
             );
         },
         removeTableRow( item ) {
             this.$store.dispatch( 'removeService',
                 {
-                    serviceName : this.cardName,
-                    id          : item._id,
+                    service : this.cardName,
+                    id      : item._id,
                 }
             );
         },

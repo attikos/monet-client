@@ -48,17 +48,17 @@ export default {
     },
 
     // async
-    updateService( { commit }, { serviceName, id, data } ) {
-        services[ serviceName ].update( id, data );
+    updateService( { commit }, { service, id, data } ) {
+        services[ service ].update( id, data );
     },
 
     // async
-    createService( { commit }, { serviceName, data } ) {
-        services[ serviceName ].create( data );
+    createService( { commit }, { service, data } ) {
+        services[ service ].create( data );
     },
 
     // async
-    removeService( { commit }, { serviceName, id } ) {
-        services[ serviceName ].remove( id );
+    removeService( { commit }, { service, id } ) {
+        services[ service ].remove( id );
     },
 }
