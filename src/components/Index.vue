@@ -42,7 +42,7 @@
                             </v-card-title>
 
                             <v-card-text>
-                                Суммарный доход: {{ ( incomeCash.sumRows ) }}
+                                Суммарный доход: {{ money( incomeCash.sumRows ) }}
                                 <br />
                                 Суммарный расход: {{ money( costCash.sumRows ) }}
                             </v-card-text>
