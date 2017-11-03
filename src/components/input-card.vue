@@ -51,7 +51,6 @@
 
 <script>
 import tableRow from '@/components/table-row/table-row.vue'
-import { services } from '@/services';
 
 export default {
     props : [ 'cardName', 'title', 'listRows' ],
