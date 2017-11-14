@@ -10,6 +10,9 @@ const state = {
     incomeCash : [],
     costCash   : [],
     wish       : [],
+    user       : {
+        isAuthenticated : false,
+    },
 };
 
 export default new Vuex.Store({

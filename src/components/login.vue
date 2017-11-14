@@ -3,27 +3,32 @@
 
         <h1 class="font-100">Рады Вас снова видеть</h1>
 
-        <v-form @submit.stop.prevent="auth( email, password )">
+        <v-form v-model="isValidForm" ref="form" lazy-validation @submit.stop.prevent="submit">
 
             <v-text-field
                 label="Email"
+                type="email"
                 v-model="email"
+                :rules="emailRules"
                 required
             ></v-text-field>
 
             <v-text-field
                 label="Пароль"
+                type="password"
                 v-model="password"
+                :rules="passwordRules"
                 required
             ></v-text-field>
 
             <v-btn
-                @click="auth( email, password )"
+                type="submit"
+                :disabled="!isValidForm"
             >
                 Войти
             </v-btn>
 
-            <v-btn @click="signin">Зарегистрироваться</v-btn>
+            <v-btn>Зарегистрироваться</v-btn>
 
         </v-form>
 
@@ -31,21 +36,36 @@
 </template>
 
 <script>
-import { app } from '@/services/';
+const PASSWORD_LENGTH = 6;
 
 export default {
     data () {
         return {
-            email    : '',
-            password : '',
+            isValidForm : false,
+            email       : '',
+            emailRules  : [
+                (v) => !!v || 'E-mail обязателен',
+                (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Некорректный e-mail'
+            ],
+            password      : '',
+            passwordRules : [
+                (v) => !!v || 'Пароль обязателен',
+                (v) => v.length >= PASSWORD_LENGTH || `Пароль должен быть не менее ${PASSWORD_LENGTH} символов`
+            ],
         }
     },
     methods : {
         auth( email, password ) {
-            app.authenticate( { strategy: 'local', email, password } );
+            this.$store.dispatch( "authenticate", { strategy: 'local', email, password } );
+        },
+        submit() {
+            if ( this.isValidForm ) {
+                this.auth( this.email, this.password );
+            }
         },
         signin() {
-            return;
+
+            //TODO
         },
     },
 }

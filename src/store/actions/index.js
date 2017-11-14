@@ -1,4 +1,4 @@
-import { services } from '@/services/';
+import { services, app } from '@/services/';
 
 export default {
     initCallbacks: ( { commit } ) => {
@@ -60,5 +60,30 @@ export default {
     // async
     removeService( { commit }, { service, id } ) {
         services[ service ].remove( id );
+    },
+
+    login( { commit }, { email, password } ) {
+        // TODO
+    },
+
+    authenticate( { commit }, data ) {
+        return new Promise( ( resolve, reject ) => {
+
+            app.authenticate( data )
+                .then( ( res ) => {
+
+                    commit( 'SET_AUTHENTICATED', true );
+
+                    resolve( res );
+                } )
+                .catch( error => {
+
+                    if ( error.code === 401 ) {
+                        commit( 'SET_AUTHENTICATED', false );
+                    }
+
+                    reject( error );
+                })
+        });
     },
 }

@@ -25,8 +25,7 @@
 </template>
 
 <script>
-import { app } from '@/services/';
-
+const loginPage = '/login';
 export default {
     name: 'app',
 
@@ -50,21 +49,15 @@ export default {
             app.logout().then( () => {
                 this.user.authenticated = false;
 
-                window.location.href = '/login';
+                window.location.href = loginPage;
             } )
         }
     },
 
     created() {
-        let loginPage = '/login';
-
         if ( window.location.pathname !== loginPage ) {
 
-            app.authenticate()
-                .then( () => {
-                    this.user.authenticated = true;
-                } )
-                // On errors we just redirect back to the login page
+            this.$store.dispatch( "authenticate" )
                 .catch( error => {
                     if ( error.code === 401 ) window.location.href = loginPage;
                 });
