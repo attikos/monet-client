@@ -23,7 +23,8 @@ export const app = feathers()
 export const services = {
 
     // repeat this line for every service in our backend
-    incomeCash: app.service('income-cash'),
-    costCash:   app.service('cost-cash'),
-    wish:       app.service('wish'),
+    incomeCash:  app.service('income-cash'),
+    costCash:    app.service('cost-cash'),
+    wish:        app.service('wish'),
+    userService: app.service('users'),
 };
