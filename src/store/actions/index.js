@@ -62,8 +62,24 @@ export default {
         services[ service ].remove( id );
     },
 
-    login( { commit }, { email, password } ) {
-        // TODO
+    createUser( { commit }, user ) {
+        return new Promise( ( resolve, reject ) => {
+
+            app.service('users').create( user )
+                .then( res => resolve( res ) )
+                .catch( error => reject( error ) );
+
+        } );
+    },
+
+    logout() {
+        return new Promise( ( resolve, reject ) => {
+
+            app.logout()
+                .then( res => resolve( res ) )
+                .catch( error => reject( error ) );
+
+        } );
     },
 
     authenticate( { commit }, data ) {

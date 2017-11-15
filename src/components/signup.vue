@@ -1,7 +1,7 @@
 <template>
     <main class="container">
 
-        <h1 class="font-100">Рады Вас снова видеть</h1>
+        <h1 class="font-100">Регистрация</h1>
 
         <v-form v-model="isValidForm" ref="form" lazy-validation @submit.stop.prevent="submit">
 
@@ -28,10 +28,10 @@
                 color="light-green"
                 :disabled="!isValidForm"
             >
-                Войти
+                Зарегистрироваться
             </v-btn>
 
-            <v-btn @click="toSignup()">Зарегистрироваться</v-btn>
+            <v-btn @click="toLogin()">Войти</v-btn>
 
         </v-form>
 
@@ -53,24 +53,28 @@ export default {
             password      : '',
             passwordRules : [
                 (v) => !!v || 'Пароль обязателен',
-                (v) => v.length >= MIN_PASSWORD_LENGTH
-                    || `Пароль должен быть не менее ${MIN_PASSWORD_LENGTH} символов`
+                (v) => v.length >= MIN_PASSWORD_LENGTH || `Пароль должен быть не менее ${MIN_PASSWORD_LENGTH} символов`
             ],
         }
     },
+
     methods : {
-        auth( email, password ) {
-            this.$store.dispatch( 'authenticate', { strategy: 'local', email, password } )
-                .then( () => this.$router.push( { name : 'Index' } ) );
-        },
         submit() {
             if ( this.isValidForm ) {
-                this.auth( this.email, this.password );
+                this.signup( this.email, this.password );
             }
         },
-        toSignup() {
-            this.$router.push( { name: 'Signup' } );
+        signup( email, password ) {
+            this.$store.dispatch( "createUser", { email, password } )
+                .then( response => {
+                    this.$store.dispatch( "authenticate", { strategy: 'local', email, password } );
+
+                    this.$router.push( { name : 'Index'} );
+                 });
         },
+        toLogin() {
+            this.$router.push( { name: 'Login' } );
+        }
     },
 }
 </script>

@@ -9,8 +9,9 @@
 
                 <v-spacer></v-spacer>
 
-                <v-toolbar-items class="hidden-sm-and-down">
-                    <v-btn flat>Войти</v-btn>
+                <v-toolbar-items v-if="showLoginButton" class="hidden-sm-and-down">
+                    <v-btn v-if="isAuthenticated" flat @click="logout()">Выйти</v-btn>
+                    <v-btn v-else flat @click="goToLogin()">Войти</v-btn>
                 </v-toolbar-items>
             </v-toolbar>
 
@@ -29,12 +30,13 @@ const loginPage = '/login';
 export default {
     name: 'app',
 
-    data() {
-        return {
-            user: {
-                authenticated: false,
-            },
-        };
+    computed : {
+        showLoginButton() {
+            return ![ 'Login', 'Signup' ].includes( this.$route.name );
+        },
+        isAuthenticated() {
+            return this.$store.getters.getUser.isAuthenticated;
+        },
     },
 
     mounted() {
@@ -44,25 +46,28 @@ export default {
         this.$store.dispatch('fetchData', 'wish');
     },
 
-    methods: {
+    methods : {
+        goToLogin() {
+            this.$router.push( { name : 'Login' } );
+        },
         logout() {
-            app.logout().then( () => {
-                this.user.authenticated = false;
-
-                window.location.href = loginPage;
-            } )
+            this.$store.dispatch('logout')
+                .then( () => {
+                    this.goToLogin();
+                } )
         }
     },
 
-    created() {
-        if ( window.location.pathname !== loginPage ) {
+    // created() {
+    //     // if ( window.location.pathname !== loginPage ) {
 
-            this.$store.dispatch( "authenticate" )
-                .catch( error => {
-                    if ( error.code === 401 ) window.location.href = loginPage;
-                });
-        }
-    },
+    //         this.$store.dispatch('authenticate')
+    //             .catch( error => {
+    //                 // if ( error.code === 401 ) window.location.href = loginPage;
+    //                 // if ( error.code === 401 ) this.$router.push( { name: 'Login' } );
+    //             });
+    //     // }
+    // },
 };
 </script>
 
