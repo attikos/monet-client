@@ -67,10 +67,9 @@ export default {
         signup( email, password ) {
             this.$store.dispatch( "createUser", { email, password } )
                 .then( response => {
-                    this.$store.dispatch( "authenticate", { strategy: 'local', email, password } );
-
-                    this.$router.push( { name : 'Index'} );
-                 })
+                    this.$store.dispatch( "authenticate", { strategy: 'local', email, password } )
+                        .then( () => this.$router.push( { name : 'Index'} ) );
+                 } )
                  .catch( err => console.dir( err ) );
         },
         toLogin() {

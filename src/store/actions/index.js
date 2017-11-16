@@ -72,11 +72,15 @@ export default {
         } );
     },
 
-    logout() {
+    logout( { commit }, data ) {
         return new Promise( ( resolve, reject ) => {
 
             app.logout()
-                .then( res => resolve( res ) )
+                .then( res => {
+                    commit( 'SET_AUTHENTICATED', false );
+
+                    resolve( res );
+                } )
                 .catch( err => reject( err ) );
 
         } );
