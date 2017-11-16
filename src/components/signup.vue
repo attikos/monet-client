@@ -70,7 +70,8 @@ export default {
                     this.$store.dispatch( "authenticate", { strategy: 'local', email, password } );
 
                     this.$router.push( { name : 'Index'} );
-                 });
+                 })
+                 .catch( err => console.dir( err ) );
         },
         toLogin() {
             this.$router.push( { name: 'Login' } );

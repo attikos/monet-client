@@ -31,14 +31,41 @@ const router = new Router({
 });
 
 router.beforeEach( ( to, from, next ) => {
+
+    const redirectToRoot = function() {
+
+        if ( [ 'Login', 'Signup' ].includes( to.name ) ) {
+            next( '/' );
+        }
+        else {
+            next();
+        }
+    }
+
     if ( user.isAuthenticated === undefined ) {
 
         store.dispatch('authenticate')
-            .then( () => next( '/' ) )
-            .catch( () => next( '/login' ) );
+            .then( () => redirectToRoot() )
+            .catch( () => {
+                if ( to.meta.requiresAuth ) {
+                    next( '/login' );
+                }
+                else {
+                    next();
+                }
+            } );
+
+    }
+    else if ( user.isAuthenticated ) {
+        redirectToRoot();
+    }
+    else if ( to.meta.requiresAuth ) {
+        next( '/login' );
+    }
+    else {
+        next();
     }
 
-    next();
 } );
 
 export default router;

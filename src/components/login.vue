@@ -1,7 +1,7 @@
 <template>
     <main class="container">
 
-        <h1 class="font-100">Рады Вас снова видеть</h1>
+        <h1 class="font-100">Авторизация</h1>
 
         <v-form v-model="isValidForm" ref="form" lazy-validation @submit.stop.prevent="submit">
 
@@ -58,10 +58,12 @@ export default {
             ],
         }
     },
+
     methods : {
         auth( email, password ) {
             this.$store.dispatch( 'authenticate', { strategy: 'local', email, password } )
-                .then( () => this.$router.push( { name : 'Index' } ) );
+                .then( () => this.$router.push( { name : 'Index' } ) )
+                .catch( err => console.dir( err ) );
         },
         submit() {
             if ( this.isValidForm ) {

@@ -67,7 +67,7 @@ export default {
 
             app.service('users').create( user )
                 .then( res => resolve( res ) )
-                .catch( error => reject( error ) );
+                .catch( err => reject( err ) );
 
         } );
     },
@@ -77,7 +77,7 @@ export default {
 
             app.logout()
                 .then( res => resolve( res ) )
-                .catch( error => reject( error ) );
+                .catch( err => reject( err ) );
 
         } );
     },
@@ -92,13 +92,13 @@ export default {
 
                     resolve( res );
                 } )
-                .catch( error => {
+                .catch( err => {
 
-                    if ( error.code === 401 ) {
+                    if ( err.code === 401 ) {
                         commit( 'SET_AUTHENTICATED', false );
                     }
 
-                    reject( error );
+                    reject( err );
                 })
         });
     },
