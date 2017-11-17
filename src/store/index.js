@@ -12,8 +12,10 @@ const state = {
     costCash   : [],
     wish       : [],
     user       : {
-        isAuthenticated : undefined,
+        email : '',
+        _id   : '',
     },
+    isAuthenticated : undefined,
 };
 
 export default new Vuex.Store({

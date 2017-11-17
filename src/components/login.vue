@@ -63,7 +63,7 @@ export default {
         auth( email, password ) {
             this.$store.dispatch( 'authenticate', { strategy: 'local', email, password } )
                 .then( () => this.$router.push( { name : 'Index' } ) )
-                .catch( err => console.dir( err ) );
+                .catch( err => console.log( err ) );
         },
         submit() {
             if ( this.isValidForm ) {

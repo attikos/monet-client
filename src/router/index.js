@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/'
 
-const user = store.getters.getUser;
 const lazyLoad = ( path ) => () => import( `@/components/${path}` );
 
 
@@ -42,7 +41,7 @@ router.beforeEach( ( to, from, next ) => {
         }
     }
 
-    if ( user.isAuthenticated === undefined ) {
+    if ( store.getters.getAuthState === undefined ) {
 
         store.dispatch('authenticate')
             .then( () => redirectToRoot() )
@@ -56,7 +55,7 @@ router.beforeEach( ( to, from, next ) => {
             } );
 
     }
-    else if ( user.isAuthenticated ) {
+    else if ( store.getters.getAuthState ) {
         redirectToRoot();
     }
     else if ( to.meta.requiresAuth ) {

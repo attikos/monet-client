@@ -26,7 +26,14 @@
 </template>
 
 <script>
+
+// TODO для дебага, выпилить
+import { services, app } from '@/services/';
+window.services = services;
+window.app = app;
+
 const loginPage = '/login';
+
 export default {
     name: 'app',
 
@@ -35,7 +42,7 @@ export default {
             return ![ 'Login', 'Signup' ].includes( this.$route.name );
         },
         isAuthenticated() {
-            return this.$store.getters.getUser.isAuthenticated;
+            return this.$store.getters.getAuthState;
         },
     },
 
@@ -57,17 +64,6 @@ export default {
                 } )
         }
     },
-
-    // created() {
-    //     // if ( window.location.pathname !== loginPage ) {
-
-    //         this.$store.dispatch('authenticate')
-    //             .catch( error => {
-    //                 // if ( error.code === 401 ) window.location.href = loginPage;
-    //                 // if ( error.code === 401 ) this.$router.push( { name: 'Login' } );
-    //             });
-    //     // }
-    // },
 };
 </script>
 

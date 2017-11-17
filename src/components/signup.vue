@@ -66,11 +66,11 @@ export default {
         },
         signup( email, password ) {
             this.$store.dispatch( "createUser", { email, password } )
-                .then( response => {
+                .then( () => {
                     this.$store.dispatch( "authenticate", { strategy: 'local', email, password } )
                         .then( () => this.$router.push( { name : 'Index'} ) );
                  } )
-                 .catch( err => console.dir( err ) );
+                 .catch( err => console.log( err ) );
         },
         toLogin() {
             this.$router.push( { name: 'Login' } );

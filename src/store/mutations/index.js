@@ -63,7 +63,11 @@ export default {
         state.wish.sort( sortByKey('label') );
     },
 
-    SET_AUTHENTICATED( state, data ) {
-        state.user.isAuthenticated = data;
+    SET_AUTH_STATE( state, data ) {
+        state.isAuthenticated = data;
+    },
+
+    SET_USER( state, data ) {
+        state.user = data;
     },
 }
