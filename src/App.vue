@@ -9,6 +9,8 @@
 
                 <v-spacer></v-spacer>
 
+                <div v-if="isAuthenticated" class="toolbar-email">{{user.email}}</div>
+
                 <v-toolbar-items v-if="showLoginButton" class="hidden-sm-and-down">
                     <v-btn v-if="isAuthenticated" flat @click="logout()">Выйти</v-btn>
                     <v-btn v-else flat @click="goToLogin()">Войти</v-btn>
@@ -44,6 +46,9 @@ export default {
         isAuthenticated() {
             return this.$store.getters.getAuthState;
         },
+        user() {
+            return this.$store.getters.getUser;
+        }
     },
 
     mounted() {
@@ -69,4 +74,8 @@ export default {
 
 <style lang="less">
     @import "./animation.less";
+
+    .toolbar-email {
+        padding: 15px;
+    }
 </style>
