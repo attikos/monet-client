@@ -41,22 +41,33 @@ export default {
         });
     },
 
-    fetchData: ({ commit }, service) => {
-        services[service].find({}).then(data => {
-            commit('FETCH_DATA', { service, data: data.data });
-        })
+    fetchData: ({ commit, state }, service) => {
+
+        services[service].find( {
+            query: {
+                userId: state.user._id || '',
+            }
+        } )
+            .then( data => commit( 'FETCH_DATA', { service, data: data.data } ) )
+
     },
 
-    updateService({ commit }, { service, id, data }) {
-        services[service].update(id, data);
+    updateService({ commit, state }, { service, id, data }) {
+
+        services[service].update( id, { ...data, userId : state.user._id } );
+
     },
 
-    createService({ commit }, { service, data }) {
-        services[service].create(data);
+    createService({ commit, state }, { service, data }) {
+
+        services[service].create( { ...data, userId: state.user._id } );
+
     },
 
     removeService({ commit }, { service, id }) {
+
         services[service].remove(id);
+
     },
 
     createUser({ commit }, user) {
@@ -69,7 +80,7 @@ export default {
         });
     },
 
-    authenticate({ commit }, data) {
+    authenticate({ commit, dispatch }, data) {
         return new Promise((resolve, reject) => {
 
             app.authenticate(data)
@@ -81,7 +92,13 @@ export default {
                     commit('SET_AUTH_STATE', true);
                     commit('SET_USER', user);
 
-                    resolve();
+                    Promise.all([
+                        dispatch('fetchData', 'incomeCash'),
+                        dispatch('fetchData', 'costCash'),
+                        dispatch('fetchData', 'wish'),
+                    ])
+                        .then( () => resolve() );
+
                 })
                 .catch(err => {
 
@@ -94,15 +111,27 @@ export default {
         });
     },
 
-    logout({ commit }, data) {
+    logout({ commit, dispatch }, data) {
         return new Promise((resolve, reject) => {
 
             app.logout()
                 .then(res => {
-                    commit('SET_AUTH_STATE', false);
                     app.set('user', null);
 
-                    resolve(res);
+                    commit('SET_AUTH_STATE', false);
+                    commit('SET_USER', {
+                        user : {
+                            email : '',
+                            _id   : '',
+                        },
+                    });
+
+                    Promise.all([
+                        dispatch('fetchData', 'incomeCash'),
+                        dispatch('fetchData', 'costCash'),
+                        dispatch('fetchData', 'wish'),
+                    ])
+                        .then( () => resolve() );
                 })
                 .catch(err => reject(err));
 

@@ -53,9 +53,6 @@ export default {
 
     mounted() {
         this.$store.dispatch('initCallbacks');
-        this.$store.dispatch('fetchData', 'incomeCash');
-        this.$store.dispatch('fetchData', 'costCash');
-        this.$store.dispatch('fetchData', 'wish');
     },
 
     methods : {
@@ -64,9 +61,7 @@ export default {
         },
         logout() {
             this.$store.dispatch('logout')
-                .then( () => {
-                    this.goToLogin();
-                } )
+                .then( () => this.goToLogin() )
         }
     },
 };
