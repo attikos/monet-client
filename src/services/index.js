@@ -5,13 +5,13 @@ import io from 'socket.io-client';
 import auth from 'feathers-authentication-client';
 
 
-let HOST = 'localhost',
-    PORT = '3030';
-
-if (process.env.NODE_ENV === 'production') {
-    HOST = '127.0.0.1';
+let HOST = 'api.monet.j-reg.ru',
     PORT = '8083';
-}
+
+// if (process.env.NODE_ENV === 'production') {
+//     HOST = '127.0.0.1';
+//     PORT = '8083';
+// }
 
 const socket = io('http://' + HOST + ':' + PORT);
 
