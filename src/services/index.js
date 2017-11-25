@@ -8,10 +8,10 @@ import auth from 'feathers-authentication-client';
 let HOST = 'localhost',
     PORT = '3030';
 
-// if (process.env.NODE_ENV === 'production') {
-//     HOST = 'www.***host***.tld';
-//     PORT = '8080';
-// }
+if (process.env.NODE_ENV === 'production') {
+    HOST = '127.0.0.1';
+    PORT = '8083';
+}
 
 const socket = io('http://' + HOST + ':' + PORT);
 
