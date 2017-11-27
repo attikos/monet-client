@@ -5,6 +5,8 @@
 
         <v-form v-model="isValidForm" ref="form" lazy-validation @submit.stop.prevent="submit">
 
+            <label class="red--text" v-if="errorLogin">Неверный логин или пароль</label>
+
             <v-text-field
                 label="Email"
                 type="email"
@@ -56,6 +58,7 @@ export default {
                 (v) => v.length >= MIN_PASSWORD_LENGTH
                     || `Пароль должен быть не менее ${MIN_PASSWORD_LENGTH} символов`
             ],
+            errorLogin : false,
         }
     },
 
@@ -63,10 +66,18 @@ export default {
         auth( email, password ) {
             this.$store.dispatch( 'authenticate', { strategy: 'local', email, password } )
                 .then( () => this.$router.push( { name : 'Index' } ) )
-                .catch( err => console.log( err ) );
+                .catch( err => {
+                    // console.log( err );
+
+                    if ( err.code === 401 ) {
+                        this.errorLogin = true;
+                    }
+                } );
         },
         submit() {
             if ( this.isValidForm ) {
+                this.errorLogin = false;
+
                 this.auth( this.email, this.password );
             }
         },
