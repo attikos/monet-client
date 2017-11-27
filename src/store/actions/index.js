@@ -1,43 +1,56 @@
 import { services, app } from '@/services/';
 
+const filterData = function( data ) {
+    let filterData;
+
+    if ( data.length ) {
+        data.filter( x => x.userId === state.user._id );
+    }
+
+    if ( !filterData.length ) {
+        data = [];
+    }
+}
+
 export default {
-    initCallbacks: ({ commit }) => {
+    initCallbacks: ({ commit, state }) => {
+
         services.incomeCash.on('created', data => {
-            commit('ADD_INCOME_ITEM', data);
+            data.userId === state.user._id && commit('ADD_INCOME_ITEM', data);
         });
 
         services.incomeCash.on('removed', data => {
-            commit('REMOVE_INCOME_ITEM', data);
+            data.userId === state.user._id && commit('REMOVE_INCOME_ITEM', data);
         });
 
         services.incomeCash.on('updated', data => {
-            commit('UPDATE_INCOME_ITEM', data);
+           data.userId === state.user._id && commit('UPDATE_INCOME_ITEM', data);
         });
 
 
         services.costCash.on('created', data => {
-            commit('ADD_COST_ITEM', data);
+            data.userId === state.user._id && commit('ADD_COST_ITEM', data);
         });
 
         services.costCash.on('removed', data => {
-            commit('REMOVE_COST_ITEM', data);
+            data.userId === state.user._id && commit('REMOVE_COST_ITEM', data);
         });
 
         services.costCash.on('updated', data => {
-            commit('UPDATE_COST_ITEM', data);
+            data.userId === state.user._id && commit('UPDATE_COST_ITEM', data);
         });
 
 
         services.wish.on('created', data => {
-            commit('ADD_WISH_ITEM', data);
+            data.userId === state.user._id && commit('ADD_WISH_ITEM', data);
         });
 
         services.wish.on('removed', data => {
-            commit('REMOVE_WISH_ITEM', data);
+            data.userId === state.user._id && commit('REMOVE_WISH_ITEM', data);
         });
 
         services.wish.on('updated', data => {
-            commit('UPDATE_WISH_ITEM', data);
+            data.userId === state.user._id && commit('UPDATE_WISH_ITEM', data);
         });
     },
 
@@ -48,7 +61,7 @@ export default {
                 userId: state.user._id || '',
             }
         } )
-            .then( data => commit( 'FETCH_DATA', { service, data: data.data } ) )
+            .then( res => commit( 'FETCH_DATA', { service, data: res.data } ) )
 
     },
 
