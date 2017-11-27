@@ -1,7 +1,7 @@
 <template>
-    <v-layout row class="input-item">
+    <v-layout row class="input-item" v-bind="binding">
 
-        <v-flex xs5>
+        <v-flex xs12 md5-and-up>
 
             <cell
                 class="item-layout"
@@ -14,7 +14,7 @@
 
         </v-flex>
 
-        <v-flex xs5>
+        <v-flex xs12 md5-and-up>
 
             <cell
                 class="item-layout"
@@ -48,15 +48,29 @@ import cell from './cell'
 
 export default {
     props: [ 'itemVal', 'itemLabel' ],
+
     components: {
         cell,
     },
+
     methods : {
         saveCell( data ) {
             this.$emit( 'saveCell', data );
         },
-    }
-}
+    },
+
+    computed: {
+        binding () {
+          const binding = {};
+
+          if ( this.$vuetify.breakpoint.smAndDown ) {
+              binding.column = true;
+          }
+
+          return binding;
+        },
+    },
+};
 </script>
 
 <style scoped lang="less">
