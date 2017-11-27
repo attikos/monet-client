@@ -26,6 +26,10 @@ const router = new Router({
             name: 'Signup',
             component: lazyLoad('signup'),
         },
+        {
+            path: '*',
+            redirect : '/',
+        },
     ]
 });
 
@@ -44,7 +48,7 @@ router.beforeEach( ( to, from, next ) => {
     if ( store.getters.getAuthState === undefined ) {
 
         store.dispatch('authenticate')
-            .then( () => redirectToRoot() )
+            .then( redirectToRoot )
             .catch( () => {
                 if ( to.meta.requiresAuth ) {
                     next( '/login' );
