@@ -13,6 +13,11 @@ let HOST = 'api.monet.j-reg.ru',
 //     PORT = '8083';
 // }
 
+if ( location.hostname === 'localhost' ) {
+    HOST = 'localhost',
+    PORT = '3030';
+}
+
 const socket = io('http://' + HOST + ':' + PORT);
 
 export const app = feathers()
