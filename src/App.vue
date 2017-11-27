@@ -4,7 +4,27 @@
 
             <!-- <v-navigation-drawer></v-navigation-drawer> -->
             <v-toolbar>
-                <v-toolbar-side-icon class="hidden-md-and-up"></v-toolbar-side-icon>
+
+                <v-menu
+                    offset-y
+                    transition="slide-x-transition"
+                    bottom
+                    right
+                >
+
+                    <v-toolbar-side-icon class="hidden-md-and-up" slot="activator"></v-toolbar-side-icon>
+
+                    <v-list>
+
+                        <v-list-tile>
+                            <v-list-tile-title v-if="isAuthenticated" @click="logout()">Выйти</v-list-tile-title>
+                            <v-list-tile-title v-else @click="goToLogin()">Войти</v-list-tile-title>
+                        </v-list-tile>
+
+                    </v-list>
+
+                </v-menu>
+
                 <v-toolbar-title>Исполнитель желаний</v-toolbar-title>
 
                 <v-spacer></v-spacer>
