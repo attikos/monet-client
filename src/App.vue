@@ -48,12 +48,6 @@
 </template>
 
 <script>
-
-// TODO для дебага, выпилить
-import { services, app } from '@/services/';
-window.services = services;
-window.app = app;
-
 const loginPage = '/login';
 
 export default {
