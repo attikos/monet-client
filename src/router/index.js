@@ -33,7 +33,7 @@ const router = new Router({
     ]
 });
 
-router.beforeEach( ( to, from, next ) => {
+router.beforeEach( async ( to, from, next ) => {
 
     const redirectToRoot = function() {
 
@@ -47,16 +47,20 @@ router.beforeEach( ( to, from, next ) => {
 
     if ( store.getters.getAuthState === undefined ) {
 
-        store.dispatch('authenticate')
-            .then( redirectToRoot )
-            .catch( () => {
-                if ( to.meta.requiresAuth ) {
-                    next( '/login' );
-                }
-                else {
-                    next();
-                }
-            } );
+        try {
+
+            await store.dispatch('authenticate');
+            redirectToRoot();
+
+        }
+        catch( err ) {
+            if ( to.meta.requiresAuth ) {
+                next( '/login' );
+            }
+            else {
+                next();
+            }
+        };
 
     }
     else if ( store.getters.getAuthState ) {

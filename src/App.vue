@@ -73,9 +73,9 @@ export default {
         goToLogin() {
             this.$router.push( { name : 'Login' } );
         },
-        logout() {
-            this.$store.dispatch('logout')
-                .then( () => this.goToLogin() )
+        async logout() {
+            await this.$store.dispatch('logout');
+            this.goToLogin();
         }
     },
 };

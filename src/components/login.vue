@@ -63,16 +63,19 @@ export default {
     },
 
     methods : {
-        auth( email, password ) {
-            this.$store.dispatch( 'authenticate', { strategy: 'local', email, password } )
-                .then( () => this.$router.push( { name : 'Index' } ) )
-                .catch( err => {
-                    // console.log( err );
+        async auth( email, password ) {
+            try {
 
-                    if ( err.code === 401 ) {
-                        this.errorLogin = true;
-                    }
-                } );
+                await this.$store.dispatch( 'authenticate', { strategy: 'local', email, password } )
+                this.$router.push( { name : 'Index' } );
+
+            } catch( err ) {
+
+                if ( err.code === 401 ) {
+                    this.errorLogin = true;
+                }
+
+            };
         },
         submit() {
             if ( this.isValidForm ) {

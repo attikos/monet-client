@@ -64,13 +64,16 @@ export default {
                 this.signup( this.email, this.password );
             }
         },
-        signup( email, password ) {
-            this.$store.dispatch( "createUser", { email, password } )
-                .then( () => {
-                    this.$store.dispatch( "authenticate", { strategy: 'local', email, password } )
-                        .then( () => this.$router.push( { name : 'Index'} ) );
-                 } )
-                 .catch( err => console.log( err ) );
+        async signup( email, password ) {
+            try {
+
+                await this.$store.dispatch( "createUser", { email, password } );
+                await this.$store.dispatch( "authenticate", { strategy: 'local', email, password } );
+
+                this.$router.push( { name : 'Index'} );
+
+            }
+            catch( err ) { console.log( err ) };
         },
         toLogin() {
             this.$router.push( { name: 'Login' } );

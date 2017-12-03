@@ -54,14 +54,15 @@ export default {
         });
     },
 
-    fetchData: ({ commit, state }, service) => {
+    fetchData: async ( { commit, state }, service ) => {
 
-        services[service].find( {
+        let { data } = await services[service].find( {
             query: {
                 userId: state.user._id || '',
             }
-        } )
-            .then( res => commit( 'FETCH_DATA', { service, data: res.data } ) )
+        } );
+
+        commit( 'FETCH_DATA', { service, data } );
 
     },
 
@@ -84,69 +85,76 @@ export default {
     },
 
     createUser({ commit }, user) {
-        return new Promise((resolve, reject) => {
+        return new Promise( async (resolve, reject) => {
 
-            app.service('users').create(user)
-                .then(res => resolve(res))
-                .catch(err => reject(err));
+            try {
+                resolve( await app.service('users').create(user) );
+            }
+            catch( err ) { reject( err ) };
 
         });
     },
 
     authenticate({ commit, dispatch }, data) {
-        return new Promise((resolve, reject) => {
+        return new Promise( async (resolve, reject) => {
 
-            app.authenticate(data)
-                .then(res => app.passport.verifyJWT(res.accessToken))
-                .then(payload => app.service('users').get(payload.userId))
-                .then(user => {
-                    app.set('user', user);
+            try {
+                let { accessToken } = await app.authenticate(data);
+                let { userId }      = await app.passport.verifyJWT( accessToken );
+                let user            = await app.service('users').get( userId );
 
-                    commit('SET_AUTH_STATE', true);
-                    commit('SET_USER', user);
+                app.set('user', user);
 
-                    Promise.all([
-                        dispatch('fetchData', 'incomeCash'),
-                        dispatch('fetchData', 'costCash'),
-                        dispatch('fetchData', 'wish'),
-                    ])
-                        .then( () => resolve() );
+                commit('SET_AUTH_STATE', true);
+                commit('SET_USER', user);
 
-                })
-                .catch(err => {
+                await Promise.all([
+                    dispatch('fetchData', 'incomeCash'),
+                    dispatch('fetchData', 'costCash'),
+                    dispatch('fetchData', 'wish'),
+                ]);
 
-                    if (err.code === 401) {
-                        commit('SET_AUTH_STATE', false);
-                    }
+                resolve();
 
-                    reject(err);
-                })
+            }
+            catch( err ) {
+
+                if ( err.code === 401 ) {
+                    commit('SET_AUTH_STATE', false);
+                }
+
+                reject( err );
+            };
+
         });
     },
 
     logout({ commit, dispatch }, data) {
-        return new Promise((resolve, reject) => {
+        return new Promise( async (resolve, reject) => {
 
-            app.logout()
-                .then(res => {
-                    app.set('user', null);
+            try {
+                await app.logout();
 
-                    commit('SET_AUTH_STATE', false);
-                    commit('SET_USER', {
-                        user : {
-                            email : '',
-                            _id   : '',
-                        },
-                    });
+                app.set('user', null);
 
-                    Promise.all([
-                        dispatch('fetchData', 'incomeCash'),
-                        dispatch('fetchData', 'costCash'),
-                        dispatch('fetchData', 'wish'),
-                    ])
-                        .then( () => resolve() );
-                })
-                .catch(err => reject(err));
+                commit('SET_AUTH_STATE', false);
+                commit('SET_USER', {
+                    user : {
+                        email : '',
+                        _id   : '',
+                    },
+                });
+
+                await Promise.all([
+                    dispatch('fetchData', 'incomeCash'),
+                    dispatch('fetchData', 'costCash'),
+                    dispatch('fetchData', 'wish'),
+                ]);
+
+                resolve();
+
+            }
+            catch( err ) { reject( err ) };
 
         });
     },
