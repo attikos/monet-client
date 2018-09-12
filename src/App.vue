@@ -66,7 +66,7 @@ export default {
     },
 
     mounted() {
-        this.$store.dispatch('initCallbacks');
+        // this.$store.dispatch('initCallbacks');
     },
 
     methods : {

@@ -48,7 +48,7 @@ export default {
             email       : '',
             emailRules  : [
                 (v) => !!v || 'E-mail обязателен',
-                (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Некорректный e-mail'
+                (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/.test(v) || 'Некорректный e-mail'
             ],
             password      : '',
             passwordRules : [
@@ -68,7 +68,7 @@ export default {
             try {
 
                 await this.$store.dispatch( "createUser", { email, password } );
-                await this.$store.dispatch( "authenticate", { strategy: 'local', email, password } );
+                // await this.$store.dispatch( "authenticate", { strategy: 'local', email, password } );
 
                 this.$router.push( { name : 'Index'} );
 
