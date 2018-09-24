@@ -8,5 +8,10 @@ if ( location.hostname === 'localhost' ) {
     PORT = '3000';
 }
 
+if ( location.hostname === 'm1.j-reg.ru' ) {
+    HOST = 'http://api.m1.j-reg.ru',
+    PORT = '3000';
+}
+
 const API_PATH = '/api/v1/'
 export const URL_API  = HOST + ':' + PORT + API_PATH

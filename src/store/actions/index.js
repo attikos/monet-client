@@ -4,13 +4,16 @@ import axios from 'axios'
 window.axios = axios;
 
 axios.defaults.headers = {
+    // 'Accept': 'application/json',
+    'Content-Type': 'application/json',
     'X-Requested-With' : 'XMLHttpRequest',
-    // 'credentials'      : 'same-origin',
+    // 'crossDomain'      : true,
+    // 'credentials' : 'same-origin',
     // 'Content-Type'     : 'application/x-www-form-urlencoded',`
 }
 
 axios.defaults.baseURL = URL_API
-// axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true
 
 
 export default {
@@ -18,5 +21,9 @@ export default {
         console.log( user );
 
         return axios.post('register', user );
+    },
+
+    login({ commit }, user) {
+        return axios.post('signin', user );
     },
 };

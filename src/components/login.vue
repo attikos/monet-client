@@ -66,6 +66,9 @@ export default {
         async auth( email, password ) {
             try {
 
+                let a = await this.$store.dispatch( "login", { email, password } );
+                console.log(a)
+
                 // await this.$store.dispatch( 'authenticate', { strategy: 'local', email, password } )
                 this.$router.push( { name : 'Index' } );
 
