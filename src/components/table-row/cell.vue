@@ -72,7 +72,7 @@ export default {
                 return 0;
             }
 
-            return this.cellName === 'val' ? this.money( this.value ) : this.value;
+            return this.cellName === 'amount' ? this.money( this.value ) : this.value;
         },
     },
 
