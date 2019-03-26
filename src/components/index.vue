@@ -8,17 +8,17 @@
 
                     <v-flex xs12 sm6>
                         <input-card
-                            cardName="incomeCash"
+                            cardName="income"
                             title="Доход"
-                            :listRows="incomeCash.rows"
+                            :listRows="income.rows"
                         ></input-card>
                     </v-flex>
 
                     <v-flex xs12 sm6>
                         <input-card
-                            cardName="costCash"
+                            cardName="outcome"
                             title="Расход"
-                            :listRows="costCash.rows"
+                            :listRows="outcome.rows"
                         ></input-card>
                     </v-flex>
 
@@ -42,9 +42,9 @@
                             </v-card-title>
 
                             <v-card-text>
-                                Суммарный доход: {{ money( incomeCash.sumRows ) }}
+                                Суммарный доход: {{ money( income.sumRows ) }}
                                 <br />
-                                Суммарный расход: {{ money( costCash.sumRows ) }}
+                                Суммарный расход: {{ money( outcome.sumRows ) }}
                             </v-card-text>
 
                             <v-card-text :class="{ 'red--text' : resultCost < 0 }">
@@ -80,17 +80,17 @@ export default {
     },
 
     computed: {
-        incomeCash() {
-            return this.createTable('incomeCash');
+        income() {
+            return this.createTable('income');
         },
-        costCash() {
-            return this.createTable('costCash');
+        outcome() {
+            return this.createTable('outcome');
         },
         wish() {
             return this.createTable('wish');
         },
         resultCost() {
-            return this.incomeCash.sumRows - this.costCash.sumRows;
+            return this.income.sumRows - this.outcome.sumRows;
         },
         resultWish() {
             return {

@@ -8,60 +8,78 @@ const sortByKey = ( key ) => ( a, b ) => {
     return 0;
 }
 
+const applyTransactionList = function( state, tnList ) {
+    if ( tnList && tnList.length ) {
+        state.income  = [];
+        state.outcome = [];
+        state.wish    = [];
+
+        tnList.forEach( tn => {
+            state[ tn.type ].push( tn );
+        });
+    }
+}
+
 export default {
-    FETCH_DATA( state, { service, data } ) {
-        state[ service ] = data.sort( sortByKey('label') );
+    FETCH_DATA( state, { transaction_list } ) {
+        applyTransactionList( state, transaction_list );
     },
 
-    ADD_INCOME_ITEM( state, data ) {
-        state.incomeCash.push( data );
-        state.incomeCash.sort( sortByKey('label') );
+    CREATE_TRANSACTION ( state, { transaction_list } ) {
+        applyTransactionList( state, transaction_list );
+        // state[ tn.type ].push( tn );
+        // state[ tn.type ].sort( sortByKey('label') );
     },
 
-    REMOVE_INCOME_ITEM( state, data ) {
-        let index = findIndex( state.incomeCash, { _id: data._id } );
-        state.incomeCash.splice( index, 1 );
-    },
+    // ADD_INCOME_ITEM( state, data ) {
+    //     state.income.push( data );
+    //     state.income.sort( sortByKey('title') );
+    // },
 
-    UPDATE_INCOME_ITEM( state, data ) {
-        let index = findIndex( state.incomeCash, { _id: data._id } );
-        state.incomeCash.splice( index, 1, data );
-        state.incomeCash.sort( sortByKey('label') );
-    },
+    // REMOVE_INCOME_ITEM( state, data ) {
+    //     let index = findIndex( state.income, { _id: data._id } );
+    //     state.income.splice( index, 1 );
+    // },
 
-
-    ADD_COST_ITEM( state, data ) {
-        state.costCash.push( data );
-        state.costCash.sort( sortByKey('label') );
-    },
-
-    REMOVE_COST_ITEM( state, data ) {
-        let index = findIndex( state.costCash, { _id: data._id } );
-        state.costCash.splice( index, 1 );
-    },
-
-    UPDATE_COST_ITEM( state, data ) {
-        let index = findIndex( state.costCash, { _id: data._id } );
-        state.costCash.splice( index, 1, data );
-        state.costCash.sort( sortByKey('label') );
-    },
+    // UPDATE_INCOME_ITEM( state, data ) {
+    //     let index = findIndex( state.income, { _id: data._id } );
+    //     state.income.splice( index, 1, data );
+    //     state.income.sort( sortByKey('title') );
+    // },
 
 
-    ADD_WISH_ITEM( state, data ) {
-        state.wish.push( data );
-        state.wish.sort( sortByKey('label') );
-    },
+    // ADD_OUTCOME_ITEM( state, data ) {
+    //     state.outcome.push( data );
+    //     state.outcome.sort( sortByKey('title') );
+    // },
 
-    REMOVE_WISH_ITEM( state, data ) {
-        let index = findIndex( state.wish, { _id: data._id } );
-        state.wish.splice( index, 1 );
-    },
+    // REMOVE_OUTCOME_ITEM( state, data ) {
+    //     let index = findIndex( state.outcome, { _id: data._id } );
+    //     state.outcome.splice( index, 1 );
+    // },
 
-    UPDATE_WISH_ITEM( state, data ) {
-        let index = findIndex( state.wish, { _id: data._id } );
-        state.wish.splice( index, 1, data );
-        state.wish.sort( sortByKey('label') );
-    },
+    // UPDATE_OUTCOME_ITEM( state, data ) {
+    //     let index = findIndex( state.outcome, { _id: data._id } );
+    //     state.outcome.splice( index, 1, data );
+    //     state.outcome.sort( sortByKey('title') );
+    // },
+
+
+    // ADD_WISH_ITEM( state, data ) {
+    //     state.wish.push( data );
+    //     state.wish.sort( sortByKey('title') );
+    // },
+
+    // REMOVE_WISH_ITEM( state, data ) {
+    //     let index = findIndex( state.wish, { _id: data._id } );
+    //     state.wish.splice( index, 1 );
+    // },
+
+    // UPDATE_WISH_ITEM( state, data ) {
+    //     let index = findIndex( state.wish, { _id: data._id } );
+    //     state.wish.splice( index, 1, data );
+    //     state.wish.sort( sortByKey('title') );
+    // },
 
     SET_AUTH_STATE( state, data ) {
         state.isAuthenticated = data;
@@ -70,4 +88,13 @@ export default {
     SET_USER( state, data ) {
         state.user = data;
     },
+
+    LOGOUT( state, data ) {
+        state.user = {
+            email : '',
+        };
+        state.income  = [];
+        state.outcome = [];
+        state.wish    = [];
+    }
 }

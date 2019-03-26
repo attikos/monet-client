@@ -14,16 +14,16 @@ Vue.use(Vuex)
 Vue.config.productionTip = false
 
 Vue.directive( 'focus', {
-  inserted: function ( el ) {
-    el.focus();
-  }
+    inserted: function ( el ) {
+        el.focus();
+    }
 })
 
 Vue.mixin({
     data() {
         return {
             config : {
-                currency : 'RUR',
+                currency : 'RUB',
             },
         }
     },
@@ -33,9 +33,7 @@ Vue.mixin({
                 symbol;
 
             switch ( currency || this.config.currency ) {
-                case 'RU':
                 case 'RUB':
-                case 'RUR':
                     value = ( val * 1 )
                         .toFixed( 2 )
                         .replace( '.', ',' )
@@ -43,8 +41,7 @@ Vue.mixin({
 
                     return `${value} ₽`;
 
-                case 'EN':
-                case 'US':
+                case 'USD':
                     value = ( val * 1 )
                         .toFixed( 2 )
                         .replace( ',', '.' )

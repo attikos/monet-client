@@ -11,8 +11,8 @@
 
             <tableRow
                 v-for="item in listRows"
-                :itemLabel="item.label"
-                :itemVal="item.val"
+                :itemTitle="item.title"
+                :itemAmount="item.amount"
                 :key="item._id"
                 @saveCell="saveCell( item, $event )"
                 @removeTableRow="removeTableRow( item )"
@@ -67,29 +67,31 @@ export default {
 
     methods: {
         saveCell( item, data ) {
+            debugger
             this.$store.dispatch( 'updateService',
                 {
-                    service : this.cardName,
-                    id      : item._id,
-                    data    : { ...item, [ data.cellName ]: data.val },
+                    type              : this.cardName,
+                    _id               : item._id,
+                    [ data.cellName ] : data.val,
+                    ...item,
                 }
             );
         },
         addCell( data ) {
             this.hideNewFields();
 
-            this.$store.dispatch( 'createService',
+            this.$store.dispatch( 'createTransaction',
                 {
-                    service : this.cardName,
-                    data    : { [ data.cellName ] : data.val },
+                    type: this.cardName,
+                    [ data.cellName ] : data.val,
                 }
             );
         },
         removeTableRow( item ) {
             this.$store.dispatch( 'removeService',
                 {
-                    service : this.cardName,
-                    id      : item._id,
+                    type : this.cardName,
+                    _id      : item._id,
                 }
             );
         },

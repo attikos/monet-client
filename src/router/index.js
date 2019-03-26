@@ -14,7 +14,7 @@ const router = new Router({
             path: '/',
             name: 'Index',
             component: lazyLoad('index'),
-            meta: { requiresAuth : false },
+            meta: { requiresAuth : true },
         },
         {
             path: '/login',
@@ -34,11 +34,7 @@ const router = new Router({
 });
 
 router.beforeEach( async ( to, from, next ) => {
-    next();
-    return;
-
     const redirectToRoot = function() {
-
         if ( [ 'Login', 'Signup' ].includes( to.name ) ) {
             next( '/' );
         }
@@ -48,10 +44,8 @@ router.beforeEach( async ( to, from, next ) => {
     }
 
     if ( store.getters.getAuthState === undefined ) {
-
         try {
-
-            // await store.dispatch('authenticate');
+            await store.dispatch('authenticate');
             redirectToRoot();
 
         }

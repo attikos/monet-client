@@ -65,19 +65,15 @@ export default {
     methods : {
         async auth( email, password ) {
             try {
-
-                let a = await this.$store.dispatch( "login", { email, password } );
-                console.log(a)
+                await this.$store.dispatch( "authenticate", { email, password } );
 
                 // await this.$store.dispatch( 'authenticate', { strategy: 'local', email, password } )
                 this.$router.push( { name : 'Index' } );
 
             } catch( err ) {
-
-                if ( err.code === 401 ) {
+                if ( err.response && err.response.status === 401 ) {
                     this.errorLogin = true;
                 }
-
             };
         },
         submit() {

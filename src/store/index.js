@@ -8,12 +8,12 @@ import getters from './getters';
 Vue.use( Vuex );
 
 const state = {
-    incomeCash : [],
-    costCash   : [],
-    wish       : [],
-    user       : {
+    income  : [],
+    outcome : [],
+    wish    : [],
+    user    : {
         email : '',
-        _id   : '',
+        // _id   : '',
     },
     isAuthenticated : undefined,
 };

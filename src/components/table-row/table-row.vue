@@ -6,10 +6,10 @@
             <cell
                 class="item-layout"
                 addClass="label-name"
-                cellName="label"
+                cellName="title"
                 placeholder="Введите название"
                 @saveCell="saveCell( $event )"
-                :cellValue="itemLabel"
+                :cellValue="itemTitle"
             ></cell>
 
         </v-flex>
@@ -19,10 +19,10 @@
             <cell
                 class="item-layout"
                 addClass="label"
-                cellName="val"
+                cellName="amount"
                 placeholder="Введите сумму"
                 @saveCell="saveCell( $event )"
-                :cellValue="itemVal"
+                :cellValue="itemAmount"
             ></cell>
 
         </v-flex>
@@ -47,7 +47,7 @@
 import cell from './cell'
 
 export default {
-    props: [ 'itemVal', 'itemLabel' ],
+    props: [ 'itemAmount', 'itemTitle' ],
 
     components: {
         cell,

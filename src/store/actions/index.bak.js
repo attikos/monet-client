@@ -29,15 +29,15 @@ export default {
 
 
         services.costCash.on('created', data => {
-            data.userId === state.user._id && commit('ADD_COST_ITEM', data);
+            data.userId === state.user._id && commit('ADD_OUTCOME_ITEM', data);
         });
 
         services.costCash.on('removed', data => {
-            data.userId === state.user._id && commit('REMOVE_COST_ITEM', data);
+            data.userId === state.user._id && commit('REMOVE_OUTCOME_ITEM', data);
         });
 
         services.costCash.on('updated', data => {
-            data.userId === state.user._id && commit('UPDATE_COST_ITEM', data);
+            data.userId === state.user._id && commit('UPDATE_OUTCOME_ITEM', data);
         });
 
 
