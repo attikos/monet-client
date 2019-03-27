@@ -90,7 +90,7 @@ export default {
             return this.createTable('wish');
         },
         resultCost() {
-            return this.income.sumRows - this.outcome.sumRows;
+            return this.income.sumRows - this.outcome.sumRows || 0;
         },
         resultWish() {
             return {

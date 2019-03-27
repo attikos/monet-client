@@ -1,6 +1,8 @@
 export const sumRowValues = function( rows ) {
     return rows.reduce(
-        ( sum, item ) => item.amount ? sum + item.amount : sum,
+        ( sum, item ) => {
+            return item.amount ? +sum + +item.amount : sum
+        },
         0
     );
 }

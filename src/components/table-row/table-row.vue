@@ -33,7 +33,7 @@
             <v-btn
                 icon
                 class="remove-button grey--text"
-                @click="$emit( 'removeTableRow' )"
+                @click="$emit( 'deleteTableRow' )"
             >
                 <v-icon class="cancel-icon">cancel</v-icon>
             </v-btn>
@@ -75,8 +75,6 @@ export default {
 
 <style scoped lang="less">
 .input-item {
-    // display: flex;
-    // height: 24px;
     border-bottom: 1px solid #ccc;
     margin: 6px 0;
 
@@ -86,11 +84,6 @@ export default {
         }
     }
 }
-
-// .input-item .item-layout {
-    // max-width: 50%;
-    // flex: 1 1 50%;
-// }
 
 .remove-button {
     display: none;

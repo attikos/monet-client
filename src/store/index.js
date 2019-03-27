@@ -13,7 +13,6 @@ const state = {
     wish    : [],
     user    : {
         email : '',
-        // _id   : '',
     },
     isAuthenticated : undefined,
 };

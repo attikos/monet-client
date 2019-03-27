@@ -4,12 +4,8 @@ import axios from 'axios'
 window.axios = axios;
 
 axios.defaults.headers = {
-    // 'Accept': 'application/json',
     'Content-Type': 'application/json',
     'X-Requested-With' : 'XMLHttpRequest',
-    // 'crossDomain'      : true,
-    // 'credentials' : 'same-origin',
-    // 'Content-Type'     : 'application/x-www-form-urlencoded',`
 }
 
 axios.defaults.baseURL = URL_API
@@ -63,16 +59,22 @@ export default {
         });
     },
 
-    // createTransaction({ commit }, transaction) {
-    //     commit('CREATE_TRANSACTION', transaction );
-
-    //     return axios.post('create_transaction', transaction );
-    // },
-
     createTransaction: async ( { commit }, transaction ) => {
         let { data } = await axios.post('create_transaction', transaction);
 
-        commit( 'CREATE_TRANSACTION', data );
+        commit( 'FETCH_DATA', data );
+    },
+
+    deleteTransaction: async ( { commit }, transaction ) => {
+        let { data } = await axios.post('delete_transaction', transaction);
+
+        commit( 'FETCH_DATA', data );
+    },
+
+    updateTransaction: async ( { commit }, transaction ) => {
+        let { data } = await axios.post('update_transaction', transaction);
+
+        commit( 'FETCH_DATA', data );
     },
 
     fetchData: async ( { commit, state } ) => {

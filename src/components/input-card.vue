@@ -15,14 +15,14 @@
                 :itemAmount="item.amount"
                 :key="item._id"
                 @saveCell="saveCell( item, $event )"
-                @removeTableRow="removeTableRow( item )"
+                @deleteTableRow="deleteTableRow( item )"
             ></tableRow>
 
             <tableRow
                 v-if="isShowNewFields"
                 key="newTableRow"
                 @saveCell="addCell( $event )"
-                @removeTableRow="hideNewFields"
+                @deleteTableRow="hideNewFields"
             ></tableRow>
 
         </v-card-text>
@@ -67,13 +67,10 @@ export default {
 
     methods: {
         saveCell( item, data ) {
-            debugger
-            this.$store.dispatch( 'updateService',
+            this.$store.dispatch( 'updateTransaction',
                 {
-                    type              : this.cardName,
                     _id               : item._id,
                     [ data.cellName ] : data.val,
-                    ...item,
                 }
             );
         },
@@ -87,13 +84,8 @@ export default {
                 }
             );
         },
-        removeTableRow( item ) {
-            this.$store.dispatch( 'removeService',
-                {
-                    type : this.cardName,
-                    _id      : item._id,
-                }
-            );
+        deleteTableRow( item ) {
+            this.$store.dispatch( 'deleteTransaction', { _id: item._id } );
         },
         showNewFields() {
             this.isShowNewFields = true;
