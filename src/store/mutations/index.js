@@ -1,12 +1,10 @@
-import findIndex from 'lodash/findIndex';
-
-const sortByKey = ( key ) => ( a, b ) => {
-    if (a[ key ] < b[ key ])
-        return -1;
-    if (a[ key ] > b[ key ])
-        return 1;
-    return 0;
-}
+// const sortByKey = ( key ) => ( a, b ) => {
+//     if (a[ key ] < b[ key ])
+//         return -1;
+//     if (a[ key ] > b[ key ])
+//         return 1;
+//     return 0;
+// }
 
 const applyTransactionList = function( state, tnList ) {
     state.income  = [];
@@ -31,6 +29,10 @@ export default {
 
     SET_USER( state, data ) {
         state.user = data;
+    },
+
+    SET_IS_WELCOME( state, data ) {
+        state.isWelcome = data;
     },
 
     LOGOUT( state, data ) {

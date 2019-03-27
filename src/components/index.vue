@@ -4,6 +4,15 @@
 
             <v-container fluid grid-list-lg>
 
+                <v-alert
+                  v-model="successRegister"
+                  color="success"
+                  dismissible
+                  outline
+                >
+                  Welcome!!!
+                </v-alert>
+
                 <v-layout row wrap>
 
                     <v-flex xs12 sm6>
@@ -51,7 +60,7 @@
                                 Ежемесячный денежный поток: {{ resultCost > 0 ? '+' : resultCost < 0 ? '-' : '' }}{{ money( resultCost ) }}
                             </v-card-text>
 
-                            <v-card-text :class="{ 'red--text' : resultCost < 0 }">
+                            <v-card-text :class="{ 'red--text' : resultCost < 0 }" v-if="resultWish.months">
                                 Желания исполнятся через: {{ resultWish.months }} месяцев.
                                 <br>
                                 Общая стоимость желаний: {{ money( wish.sumRows ) }}
@@ -79,6 +88,12 @@ export default {
         inputCard,
     },
 
+    data() {
+        return {
+            successRegister : true,
+        };
+    },
+
     computed: {
         income() {
             return this.createTable('income');
@@ -94,7 +109,7 @@ export default {
         },
         resultWish() {
             return {
-                months : ( this.wish.sumRows / this.resultCost ).toFixed(2),
+                months : this.resultCost ? ( this.wish.sumRows / this.resultCost ).toFixed(2) : 0,
                 years  : ~~ ( ( this.wish.sumRows / this.resultCost ) / 12 ),
             };
         }
@@ -109,15 +124,21 @@ export default {
                 sumRows : sumRowValues( data ),
             };
         },
-    }
+    },
+
+    mounted() {
+        this.successRegister = this.$store.getters.getIsWelcome;
+    },
+
+    watch: {
+        successRegister( val ) {
+            this.$store.commit('SET_IS_WELCOME', val);
+        },
+    },
 };
 </script>
 
 <style scoped lang="less">
-    // .container {
-    //     margin: 20px;
-    // }
-
     .card .button-card {
         bottom: 16px;
     }

@@ -15,6 +15,7 @@ const state = {
         email : '',
     },
     isAuthenticated : undefined,
+    isWelcome : false,
 };
 
 export default new Vuex.Store({

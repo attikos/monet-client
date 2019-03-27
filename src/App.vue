@@ -65,16 +65,14 @@ export default {
         }
     },
 
-    mounted() {
-        // this.$store.dispatch('initCallbacks');
-    },
-
     methods : {
         goToLogin() {
             this.$router.push( { name : 'Login' } );
         },
+
         async logout() {
             await this.$store.dispatch('logout');
+
             this.goToLogin();
         }
     },

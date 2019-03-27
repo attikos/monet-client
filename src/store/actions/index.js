@@ -13,8 +13,34 @@ axios.defaults.withCredentials = true
 
 
 export default {
-    createUser({ commit }, user) {
-        return axios.post('register', user );
+    createUser({ commit, dispatch }, user) {
+        return new Promise( async (resolve, reject) => {
+            try {
+                let { data } = await axios.post('register', user );
+
+                if ( data && data.error_message ) {
+                    commit('SET_AUTH_STATE', false);
+
+                    return resolve( data );
+                }
+
+                commit('SET_IS_WELCOME', true);
+                commit('SET_AUTH_STATE', true);
+                commit('SET_USER', { email : data.email });
+
+                await dispatch('fetchData');
+
+                resolve();
+            }
+            catch( err ) {
+                if ( err.response && err.response.status === 401 ) {
+                    commit('SET_AUTH_STATE', false);
+                }
+
+                reject( err );
+            };
+
+        });
     },
 
     authenticate({ commit, dispatch }, user) {
@@ -30,8 +56,6 @@ export default {
                 resolve();
             }
             catch( err ) {
-                console.log('action', err);
-
                 if ( err.response && err.response.status === 401 ) {
                     commit('SET_AUTH_STATE', false);
                 }
@@ -77,7 +101,7 @@ export default {
         commit( 'FETCH_DATA', data );
     },
 
-    fetchData: async ( { commit, state } ) => {
+    fetchData: async ( { commit } ) => {
         let { data } = await axios.post('transaction_list');
 
         commit( 'FETCH_DATA', data );

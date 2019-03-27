@@ -46,8 +46,8 @@ router.beforeEach( async ( to, from, next ) => {
     if ( store.getters.getAuthState === undefined ) {
         try {
             await store.dispatch('authenticate');
-            redirectToRoot();
 
+            redirectToRoot();
         }
         catch( err ) {
             if ( to.meta.requiresAuth ) {
