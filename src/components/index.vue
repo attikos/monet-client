@@ -51,19 +51,19 @@
                             </v-card-title>
 
                             <v-card-text>
-                                Суммарный доход: {{ money( income.sumRows ) }}
+                                <b>Суммарный доход:</b> {{ money( income.sumRows ) }}
                                 <br />
-                                Суммарный расход: {{ money( outcome.sumRows ) }}
+                                <b>Суммарный расход:</b> {{ money( outcome.sumRows ) }}
                             </v-card-text>
 
                             <v-card-text :class="{ 'red--text' : resultCost < 0 }">
-                                Ежемесячный денежный поток: {{ resultCost > 0 ? '+' : resultCost < 0 ? '-' : '' }}{{ money( resultCost ) }}
+                                <b>Ежемесячный денежный поток:</b> {{ resultCost > 0 ? '+' : resultCost < 0 ? '-' : '' }}{{ money( resultCost ) }}
                             </v-card-text>
 
                             <v-card-text :class="{ 'red--text' : resultCost < 0 }" v-if="resultWish.months">
-                                Желания исполнятся через: {{ resultWish.months }} месяцев.
+                                <b>Желания исполнятся:</b> {{ relativeDate( resultWish.months ) }}.
                                 <br>
-                                Общая стоимость желаний: {{ money( wish.sumRows ) }}
+                                <b>Общая стоимость желаний:</b> {{ money( wish.sumRows ) }}
                             </v-card-text>
 
                         </v-card>
@@ -110,7 +110,6 @@ export default {
         resultWish() {
             return {
                 months : this.resultCost ? ( this.wish.sumRows / this.resultCost ).toFixed(2) : 0,
-                years  : ~~ ( ( this.wish.sumRows / this.resultCost ) / 12 ),
             };
         }
     },
@@ -123,6 +122,15 @@ export default {
                 rows    : data,
                 sumRows : sumRowValues( data ),
             };
+        },
+
+        relativeDate( months ) {
+            let a = moment();
+            let days = Math.ceil( 31 * months );
+
+            a.add( days, 'd' );
+
+            return `${ a.fromNow() } (${ a.format('YYYY-MM-DD') })`;
         },
     },
 

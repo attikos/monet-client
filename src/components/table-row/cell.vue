@@ -20,13 +20,13 @@
                 class="input"
                 type="text"
                 :placeholder="placeholder"
-                v-model.trim.number="value"
+                v-model.trim="value"
                 @keyup.enter="saveCell( $event )"
                 @keyup.esc="cancel"
                 @focus="oldVal = value"
                 @blur="saveCell( $event )"
                 v-focus
-            ></input>
+            />
 
         </v-flex>
 
@@ -56,7 +56,7 @@
 
 <script>
 export default {
-    props : [ 'cellName', 'placeholder', 'cellValue', 'addClass', ],
+    props : [ 'cellName', 'placeholder', 'cellValue', 'addClass', 'isFocus' ],
 
     data() {
         return {
@@ -79,8 +79,9 @@ export default {
     methods : {
         saveCell( $event ) {
 
-            if ( !this.isEditing || this.value === this.oldVal ) {
+            if ( !this.isEditing || this.value === this.oldVal || !this.value ) {
                 this.isEditing = false;
+                this.$emit('blur');
 
                 return;
             }
@@ -93,6 +94,10 @@ export default {
             this.isEditing = false;
             this.value     = this.oldVal;
         }
+    },
+
+    mounted() {
+        this.isEditing = this.isFocus;
     },
 
     watch : {
@@ -116,10 +121,15 @@ export default {
 
 .label {
     display: block;
-    font-size: 16px;
     padding: 0 2px;
     height: 24px;
+    max-width: 234px;
     border-radius: 3px;
+    color: #2f6781;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:hover {
         background-color: #dbedff;
@@ -130,7 +140,7 @@ export default {
 .label-name {
     .label;
 
-    color: #777
+    color: #2f6781
 }
 
 .cell-highlight {

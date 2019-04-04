@@ -6,6 +6,9 @@ import App from './App'
 import router from './router'
 import store from './store/'
 import Vuetify from 'vuetify'
+import moment from 'moment';
+import 'moment/locale/ru';
+moment.locale('ru');
 
 Vue.use(Vuetify)
 Vue.use(Vuex)
@@ -65,3 +68,8 @@ new Vue({
     template: '<App/>',
     components: { App },
 })
+
+Object.assign( window, {
+    moment,
+} );
+

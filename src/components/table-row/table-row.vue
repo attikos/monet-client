@@ -9,7 +9,9 @@
                 cellName="title"
                 placeholder="Введите название"
                 @saveCell="saveCell( $event )"
+                @blur="blurHandler"
                 :cellValue="itemTitle"
+                :isFocus="!itemTitle"
             ></cell>
 
         </v-flex>
@@ -22,7 +24,9 @@
                 cellName="amount"
                 placeholder="Введите сумму"
                 @saveCell="saveCell( $event )"
+                @blur="blurHandler"
                 :cellValue="itemAmount"
+                :isFocus="!!itemTitle && !itemAmount"
             ></cell>
 
         </v-flex>
@@ -56,6 +60,11 @@ export default {
     methods : {
         saveCell( data ) {
             this.$emit( 'saveCell', data );
+        },
+        blurHandler() {
+            if ( !this.itemTitle && !this.itemAmount ) {
+               this.$emit( 'deleteTableRow' );
+            }
         },
     },
 
