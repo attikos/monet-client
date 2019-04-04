@@ -25,7 +25,7 @@
                 placeholder="Введите сумму"
                 @saveCell="saveCell( $event )"
                 @blur="blurHandler"
-                :cellValue="itemAmount"
+                :cellValue="+itemAmount"
                 :isFocus="!!itemTitle && !itemAmount"
             ></cell>
 
@@ -37,9 +37,17 @@
             <v-btn
                 icon
                 class="remove-button grey--text"
-                @click="$emit( 'deleteTableRow' )"
+                @click="$emit('deleteTableRow')"
             >
                 <v-icon class="cancel-icon">cancel</v-icon>
+            </v-btn>
+
+            <v-btn
+                icon
+                class="remove-button grey--text"
+                @click="$emit('openSettings')"
+            >
+                <v-icon class="settings-icon">settings</v-icon>
             </v-btn>
 
         </v-flex>

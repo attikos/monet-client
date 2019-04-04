@@ -37,7 +37,7 @@ Vue.mixin({
             switch ( currency || this.config.currency ) {
                 case 'RUB':
                     value = ( val * 1 )
-                        .toFixed( 2 )
+                        .toFixed( 0 )
                         .replace( '.', ',' )
                         .replace( /\B(?=(\d{3})+(?!\d))/g, ' ' );
 
@@ -45,7 +45,7 @@ Vue.mixin({
 
                 case 'USD':
                     value = ( val * 1 )
-                        .toFixed( 2 )
+                        .toFixed( 0 )
                         .replace( ',', '.' )
                         .replace( /\B(?=(\d{3})+(?!\d))/g, ',' );
 
