@@ -15,7 +15,7 @@
                 :itemAmount="item.amount"
                 :key="item._id"
                 @saveCell="saveCell( item, $event )"
-                @deleteTableRow="deleteTableRow( item )"
+                @deleteTableRow="openConfirm( item )"
                 @openSettings="openSettings( item )"
             ></tableRow>
 
@@ -40,7 +40,6 @@
                 class="light-blue button-card"
                 @click.stop="openNewForm( cardName )"
             >
-                <!-- @click="showNewFields" -->
 
                 <v-icon>add</v-icon>
 
@@ -55,13 +54,12 @@
             <form @submit.prevent="saveTransaction()">
                 <v-card>
                     <v-card-title>
-                        <span class="headline">Transaction</span>
+                        <span class="headline">Транзакция</span>
                     </v-card-title>
 
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
-
 
                                 <v-flex xs12 sm6 md6>
                                     <v-text-field label="Название" required v-model="currentItem.title"></v-text-field>
@@ -159,6 +157,24 @@ export default {
         },
         hideNewFields() {
             this.isShowNewFields = false;
+        },
+        async openConfirm( item ) {
+            this.currentItem = item;
+
+            const langs = {
+                income: 'доход',
+                outcome: 'расход',
+                wish: 'желание',
+            };
+
+            let textChip = `<span tabindex="0" class="chip chip--outline primary primary--text"><span class="chip__content">${ item.title } - ${ item.amount }</span></span>`
+
+            const res = await this.$dialog.confirm({
+                text: `Удалить ${ langs[ this.cardName ] } ${ textChip }</i>?`,
+                title: 'Внимание',
+            })
+
+            res && this.deleteTableRow( item );
         },
     },
 

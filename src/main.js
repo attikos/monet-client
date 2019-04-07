@@ -6,12 +6,31 @@ import App from './App'
 import router from './router'
 import store from './store/'
 import Vuetify from 'vuetify'
+import VuetifyDialog from 'vuetify-dialog'
+
 import moment from 'moment';
 import 'moment/locale/ru';
 moment.locale('ru');
 
-Vue.use(Vuetify)
 Vue.use(Vuex)
+Vue.use(Vuetify)
+Vue.use(VuetifyDialog, {
+    confirm: {
+        actions: {
+        false: 'Нет',
+        true: {
+            text: 'Да',
+            color: 'primary'
+        }
+        },
+        icon: false,
+        width: 500
+    },
+    warning: {},
+    error: {},
+    prompt: {}
+})
+
 
 Vue.config.productionTip = false
 

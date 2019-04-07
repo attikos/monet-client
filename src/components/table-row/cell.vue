@@ -49,7 +49,6 @@
             >
                 <v-icon class="icon">edit</v-icon>
             </v-btn>
-
         </v-flex>
     </v-layout>
 </template>
@@ -153,13 +152,13 @@ export default {
 .input-item .item-layout {
     &:hover {
         .button {
-            display: block;
+            opacity: 1;
         }
     }
 }
 
 .button {
-    display: none;
+    opacity: 0;
     width: 20px;
     height: 20px;
     margin: 0;

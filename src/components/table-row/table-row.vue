@@ -32,24 +32,30 @@
         </v-flex>
 
 
-        <v-flex xs1 offset-xs1 text-xs-center>
+        <v-flex xs12 md2 0offset-xs1 text-xs-center>
+            <v-layout >
 
-            <v-btn
-                icon
-                class="remove-button grey--text"
-                @click="$emit('deleteTableRow')"
-            >
-                <v-icon class="cancel-icon">cancel</v-icon>
-            </v-btn>
+                <v-flex >
+                    <v-btn
+                        icon
+                        class="control-button grey--text"
+                        @click="$emit('openSettings')"
+                    >
+                        <v-icon class="icon-settings">settings</v-icon>
+                    </v-btn>
+                </v-flex>
 
-            <v-btn
-                icon
-                class="remove-button grey--text"
-                @click="$emit('openSettings')"
-            >
-                <v-icon class="settings-icon">settings</v-icon>
-            </v-btn>
+                <v-flex >
 
+                    <v-btn
+                        icon
+                        class="control-button grey--text"
+                        @click="$emit('deleteTableRow')"
+                    >
+                        <v-icon class="icon-cancel">cancel</v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-layout>
         </v-flex>
 
     </v-layout>
@@ -96,14 +102,14 @@ export default {
     margin: 6px 0;
 
     &:hover {
-        .remove-button {
-            display: block;
+        .control-button {
+            opacity: 1;
         }
     }
 }
 
-.remove-button {
-    display: none;
+.control-button {
+    opacity: 0;
     width: 20px;
     height: 20px;
     margin: 0;
@@ -113,9 +119,5 @@ export default {
         cursor: pointer;
         background-color: #dbedff;
     }
-}
-
-.cancel-icon {
-    font-size: 16px;
 }
 </style>

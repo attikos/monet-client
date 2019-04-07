@@ -17,7 +17,8 @@
     "moment": "^2.24.0",
     "vue": "^2.4.2",
     "vue-router": "^2.3.1",
-    "vuetify": "^0.17.0"
+    "vuetify": "^0.17.0",
+    "vuetify-dialog": "^0.3.4"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

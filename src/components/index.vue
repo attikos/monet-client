@@ -3,7 +3,6 @@
         <v-flex xs12>
 
             <v-container fluid grid-list-lg>
-
                 <v-alert
                   v-model="successRegister"
                   color="success"
