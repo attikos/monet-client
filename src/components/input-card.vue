@@ -19,13 +19,6 @@
                 @openSettings="openSettings( item )"
             ></tableRow>
 
-            <tableRow
-                v-if="isShowNewFields"
-                key="newTableRow"
-                @saveCell="addCell( $event )"
-                @deleteTableRow="hideNewFields"
-            ></tableRow>
-
         </v-card-text>
 
         <v-card-actions>
@@ -48,13 +41,14 @@
         </v-card-actions>
 
         <v-dialog
-            v-model="dialog"
+            v-model="isDialogForm"
             max-width="600px"
+            @keydown.esc="isDialogForm = false"
         >
             <form @submit.prevent="saveTransaction()">
                 <v-card>
                     <v-card-title>
-                        <span class="headline">Транзакция</span>
+                        <span class="headline">{{ modalTitle }}</span>
                     </v-card-title>
 
                     <v-card-text>
@@ -69,14 +63,53 @@
                                     <v-text-field label="Сумма" type="number" step="0.01" required v-model="currentItem.amount"></v-text-field>
                                 </v-flex>
 
+                                <v-flex xs12 sm12 md12>
+                                    <v-menu
+                                      lazy
+                                      :close-on-content-click="false"
+                                      v-model="menuDatePicker"
+                                      transition="scale-transition"
+                                      offset-y
+                                      full-width
+                                      :nudge-right="40"
+                                      max-width="290px"
+                                      min-width="290px"
+                                    >
+                                        <v-text-field
+                                            slot="activator"
+                                            label="Дата завершения"
+                                            :value="dateFormat( currentItem.finished_at )"
+                                            prepend-icon="event"
+                                            readonly
+                                        ></v-text-field>
+
+                                        <v-date-picker
+                                            v-model="currentItem.finished_at"
+                                            no-title
+                                            scrollable
+                                            locale="ru-ru"
+                                            autosave
+                                        ></v-date-picker>
+
+                                    </v-menu>
+
+                                </v-flex>
+
+
                                 <v-flex xs12 sm6 md-6>
                                     <v-select
-                                        :items="['0-17', '18-29', '30-54', '54+']"
+                                        v-model="currentItem.period"
+                                        :items="['day', 'week', 'month', 'year']"
                                         label="Периодичность"
-
                                     ></v-select>
+                                </v-flex>
 
-                                    <v-text-field label="Повторений" ></v-text-field>
+                                <v-flex xs12 sm6 md-6>
+                                    <v-text-field
+                                        v-model="currentItem.period_value"
+                                        type="number" step="1" min="1" max="255"
+                                        label="Повторений"
+                                    ></v-text-field>
                                 </v-flex>
 
                             </v-layout>
@@ -85,7 +118,8 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat @click="dialog = false">Отмена</v-btn>
+
+                        <v-btn color="blue darken-1" flat @click="isDialogForm = false">Отмена</v-btn>
                         <v-btn color="blue darken-1" flat type="submit">Сохранить</v-btn>
                     </v-card-actions>
 
@@ -100,6 +134,12 @@
 <script>
 import tableRow from '@/components/table-row/table-row.vue'
 
+const langs = {
+    income: 'Доход',
+    outcome: 'Расход',
+    wish: 'Желание',
+}
+
 export default {
     props : [ 'cardName', 'title', 'listRows' ],
 
@@ -109,26 +149,67 @@ export default {
 
     data() {
         return {
-            isShowNewFields : false,
-            dialog: false,
+            fields: {
+                date: '',
+                period: '',
+                repeat: '',
+            },
+            isDialogForm: false,
             currentItem: {},
+            menuDatePicker: false,
         }
     },
 
+    computed: {
+        modalTitle() {
+            return langs[ this.cardName ]
+        },
+    },
+
     methods: {
+        closeDatepicker() {
+            thid.menuDatePicker = false;
+        },
+
+        dateFormat( dateString ) {
+            return dateString ? moment( dateString ).format('DD MMMM YYYY') : ''
+        },
+
+        dateFormatShort( dateString ) {
+            return dateString ? moment( dateString ).format('DD-MM-YYYY') : ''
+        },
+
+        moment: window.moment,
+
         async saveTransaction() {
-            await this.$store.dispatch( 'updateTransaction', this.currentItem );
-            this.dialog = false;
+            await this.$store.dispatch( 'updateTransaction', this.currentItem )
+
+            this.isDialogForm = false
         },
 
         openNewForm( cardName ) {
-            this.currentItem = { type: cardName };
-            this.dialog = true;
+            this.currentItem = {
+                type: cardName,
+            }
+
+            this.isDialogForm = true
         },
 
         openSettings( item ){
-            this.currentItem = item;
-            this.dialog = true;
+            this.currentItem = Object.assign( {}, item )
+
+            // let date = this.currentItem.finished_at
+
+            // console.log( date )
+
+            // this.currentItem.finished_at = date
+            //     ? moment( date ).format('YYYY-MM-DD')
+            //     : new Date().toISOString().substr(0, 10)
+
+            // console.log( this.currentItem.finished_at )
+
+
+            this.isDialogForm = true
         },
 
         saveCell( item, data ) {
@@ -137,51 +218,29 @@ export default {
                     _id               : item._id,
                     [ data.cellName ] : data.val,
                 }
-            );
-        },
-        addCell( data ) {
-            this.hideNewFields();
-
-            this.$store.dispatch( 'createTransaction',
-                {
-                    type: this.cardName,
-                    [ data.cellName ] : data.val,
-                }
-            );
+            )
         },
         deleteTableRow( item ) {
-            this.$store.dispatch( 'deleteTransaction', { _id: item._id } );
-        },
-        showNewFields() {
-            this.isShowNewFields = true;
-        },
-        hideNewFields() {
-            this.isShowNewFields = false;
+            this.$store.dispatch( 'deleteTransaction', { _id: item._id } )
         },
         async openConfirm( item ) {
-            this.currentItem = item;
-
-            const langs = {
-                income: 'доход',
-                outcome: 'расход',
-                wish: 'желание',
-            };
+            this.currentItem = item
 
             let textChip = `<span tabindex="0" class="chip chip--outline primary primary--text"><span class="chip__content">${ item.title } - ${ item.amount }</span></span>`
 
             const res = await this.$dialog.confirm({
-                text: `Удалить ${ langs[ this.cardName ] } ${ textChip }</i>?`,
+                text: `Удалить ${ langs[ this.cardName ].toLowerCase() } ${ textChip }</i>?`,
                 title: 'Внимание',
             })
 
-            res && this.deleteTableRow( item );
+            res && this.deleteTableRow( item )
         },
     },
 
     watch: {
         currentItem() {
             // убираем лишние копейки
-            this.$set( this.currentItem, 'amount', +this.currentItem.amount );
+            this.$set( this.currentItem, 'amount', +this.currentItem.amount )
         }
     },
 }
